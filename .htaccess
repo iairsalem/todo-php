@@ -5,4 +5,4 @@ Deny from all
 
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule . index.php [L]
+RewriteRule . urls.php [L]
