@@ -2,7 +2,11 @@
     'use strict';
     $(function() {
         window.csrf_token = $("meta[name='csrf-token']").attr("content");
-        var local_tasks = [];
+        var local_tasks = $.jStorage.get("tasks");
+        if(!local_tasks){
+            local_tasks = [];
+        }
+
         var tasks_map = {}; // not used
         window.is_current_user = $("meta[name='current-user']").attr("content");
         //console.log(is_current_user);
@@ -86,13 +90,13 @@
 
         function init(){
 
-
             if(window.is_current_user == "connected"){
-
                 import_tasks("tasks");
             } else {
                 local_tasks = $.jStorage.get("tasks");
-
+                if(!local_tasks){
+                    local_tasks = [];
+                }
                 for(let i in local_tasks){
                     if (!local_tasks[i] || local_tasks[i].task_name == undefined){
                         local_tasks.splice(i, 1);
@@ -111,51 +115,6 @@
 
         }
 
-        function init_old(){
-            tasks = $.jStorage.get("tasks");
-            console.log(tasks);
-            //console.log(JSON.stringify(tasks));
-            //console.log(tasks);
-            let created = false;
-            /*
-            if(tasks.length==0){
-                for (let i in sample_tasks){
-                    tasks.push({task_name:sample_tasks[i], completed:false, task_id:(parseInt(last_task_id)+parseInt(i))});
-                }
-            }*/
-            let tasks_failed = [];
-            if(local_tasks){
-                for (let task in local_tasks){
-                    if(!local_tasks[task]){
-                        local_tasks.splice(task,1);
-                        continue;
-                    }
-                    if("task_name" in local_tasks[task]){
-                        var server_id = null;
-                        if(window.is_current_user == "connected"){
-                            let created = server_create_task({task_name: local_tasks[task].task_name, completed:tasks[task].completed})
-
-
-
-
-
-
-                            local_tasks.splice(task, 1);
-                            if(created){
-                                server_id = created.id;
-                            } else{
-                                tasks_failed.push(tasks[task]);
-                            }
-                        }
-                        created = add_task(tasks[task].task_name, tasks[task].completed, tasks[task].task_id, server_id || null);
-                    }
-                }
-                if (tasks_failed.length > 0){
-                    local_tasks = local_tasks.concat(tasks_failed);
-                }
-                $.jStorage.set("tasks", local_tasks);
-            }
-        }
         function store_task(task_name, completed=false){
             var task_id = null;
             //local_tasks = $.jStorage.get("tasks", []);
@@ -180,6 +139,7 @@
             }
             if (task_name) {
                 //var task_server = create_task_server(task_name);
+                //next version, use template from html.
                 todoListItem.append("<li id='task_" + id + "'><div class='form-check show-text'><label class='form-check-label'><input class='checkbox' type='checkbox'><i class='input-helper'></i><span id='span_task_name_" + id + "'></span><i class='input-helper'></i></label></div><i class='edit_button remove mdi mdi-close-circle-outline'></i><i class='del_button remove mdi mdi-close-circle-outline'></i></li>");
                 $("#span_task_name_"+id).text(task_name);
                 if(completed){

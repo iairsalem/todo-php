@@ -7,16 +7,22 @@ if($auth->is_logged_in()){
     $username = $auth->user_name();
 }
 
+$username = "";
+$email = "";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if($auth->create_new_user()){
         //echo 'much wow';
         flash("Registration successful!");
         //$_SESSION['message'] = ['Registration Successful!'];
-        unset($_POST);
+        //unset($_POST);
+        $_SERVER['REQUEST_METHOD'] = 'GET';
         header('Location: /');
         exit;
     } else {
+        $username = $_POST['username'];
+        $email = $_POST['email'];
         flash($auth->feedback);
     }
 }
@@ -43,7 +49,7 @@ function show_flash(){
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Signin Template · Bootstrap</title>
+    <title>RTBE: Rich Client-server To-do List</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -74,9 +80,9 @@ function show_flash(){
     <img class="mb-4" src="static/todolist.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Sign up!</h1>
     <label for="inputUsername" class="sr-only">Username</label>
-    <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+    <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus value="<?php echo $username; ?>">
     <label for="inputEmail" class="sr-only">Email</label>
-    <input name="email" type="email" id="inputUsername" class="form-control" placeholder="Email address" required>
+    <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required value="<?php echo $email; ?>">
     <label for="inputPassword" class="sr-only">Password</label>
     <input name="password_new" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
     <label for="inputPasswordRepeat" class="sr-only">Repeat Password</label>

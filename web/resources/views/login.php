@@ -1,12 +1,14 @@
 <?php
     $auth = new \SimpleAuth\SimpleAuth();
 
+$username = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     if($auth->validate_login()){
         flash("Login successful!");
         header('Location: /');
+        exit;
     } else {
+        $username = $_POST['username'];
         flash($auth->feedback);
     }
 }
@@ -34,7 +36,7 @@ function show_flash(){
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Signin Template · Bootstrap</title>
+    <title>RTBE: Rich Client-server To-do List</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -64,8 +66,8 @@ function show_flash(){
   <form class="form-signin" method="post">
     <img class="mb-4" src="resources/images/todolist.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail" class="sr-only">Username</label>
-    <input name="username" type="text" id="inputEmail" class="form-control" placeholder="Username/Email address" required autofocus>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username/Email address" required autofocus value="<?php echo $username; ?>">
     <label for="inputPassword" class="sr-only">Password</label>
     <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
     <?php show_flash(); ?>
@@ -73,5 +75,11 @@ function show_flash(){
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <a class="btn btn-lg btn-primary btn-block" href="/signup" role="button">Go to Sign up</a>
   </form>
+  <script>
+  var e = document.getElementById("inputUsername");
+  if(e && e.value!=""){
+    e.select();
+  }
+</script>
 </body>
 </html>

@@ -7,12 +7,11 @@ if($auth->is_logged_in()){
 if(isset($_SESSION['bad_login']) && $_SESSION['bad_login']){
     $auth->clear_login();
     flash("Incorrect Credentials. Please log in again");
-    //$_SESSION['lapapa'] = 'lapapa++';
     unset($_SESSION['bad_login']);
     header('Location: /login');
+    exit;
 } else{
-    //$_SESSION['lapapa'] = 'lapapa++';
-    //$_SESSION['bad_login'] = false;
+
 }
 //echo print_r($_SESSION);
 function show_flash(){
