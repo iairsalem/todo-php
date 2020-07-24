@@ -82,7 +82,7 @@ function serve_file($type, $file){
         (array_key_exists("HTTP_IF_NONE_MATCH", $_SERVER) &&
         (trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag))){
             header("Cache-Control: public, max-age=31536000");
-            header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 60 * 24 * 30)));
+            header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 30)));
             header("HTTP/1.1 304 Not Modified");
             exit;
     }
