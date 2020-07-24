@@ -1,0 +1,6 @@
+{
+  "name": "RTBE - To-Do list app",
+  "description": "A Simple yet powerful To-Do list app, that works client side, server side and imports from the client to the server when logged in",
+  "repository": "tbd",
+  "addons": []
+}
