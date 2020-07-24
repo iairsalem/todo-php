@@ -92,5 +92,6 @@ if($auth->is_logged_in()){
         <div class="form-check show-text"><label class="form-check-label"> <input class="checkbox" type="checkbox"><span id="span_task_name_00"></span><i class="input-helper"></i></label></div><i class="edit_button remove mdi mdi-close-circle-outline"></i><i class="del_button remove mdi mdi-close-circle-outline"></i>
     </li>
 </template>
+<?php include('resources/views/footer.php'); ?>
 </body>
 </html>

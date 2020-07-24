@@ -865,6 +865,21 @@
             }
         };
         */
+        var head = document.getElementById("last_commit");
+        if(head){
+            head.innerText = "loading commit head";
+            var jqxhr = $.get( "https://api.github.com/repos/iairsalem/todo-php/branches/dev", null, null, "json")
+            .done(function(data) {
+                if(data && data.commit && data.commit.sha){
+                    var commit = data.commit.sha.substring(0, 7);
+                    head.innerText = commit;
+                }
+                 
+            });
+
+            //$.jqXHR("")
+        }
+
     });
 })(jQuery);
 
