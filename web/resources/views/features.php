@@ -64,7 +64,7 @@ if($auth->is_logged_in()){
         <h1 class="text-center">Features</h1>
         <p class="lead">Some highlights of this to-do app</p>
     </main>
-    <div class="padding" style="padding-top: 0;">
+    <div style="padding-top: 0;">
         <div class="row container d-flex justify-content-center mx-auto">
             <div class="col-lg-12">
                 <div class="card px-3">

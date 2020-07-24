@@ -74,7 +74,7 @@ if(!$username){
 }
 ?>
 <div class="page-content page-container" id="page-content">
-    <div class="padding" style="padding-top: 50px;">
+    <div style="padding-top: 50px;">
         <div class="row container d-flex justify-content-center mx-auto">
             <div class="col-lg-12">
                 <div class="card px-3">
