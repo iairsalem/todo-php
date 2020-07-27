@@ -1,6 +1,7 @@
 {
     "require": {
-        "altorouter/altorouter": "^2.0"
+        "altorouter/altorouter": "^2.0",
+        "ext-pdo_sqlite": "*"
     },
     "autoload": {
         "psr-0": {"SimpleAuth": "src/"}

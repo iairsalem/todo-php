@@ -1,1 +1,0 @@
-<h1 class="welcome">You are the best guest this To-do list could ever have!</h1>
