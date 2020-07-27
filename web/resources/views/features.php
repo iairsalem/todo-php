@@ -20,6 +20,7 @@ if($auth->is_logged_in()){
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script>
         var sample_tasks = [
+            "DEMO only. go to 'Manage To-Dos' for full version",
             "RTBE: 'Remember the Back-end'",
             "Meaning: Most of the heavy-lifting is done at the front end",
             "But: The backend handles authentication, DB access (CRUD) , security...",

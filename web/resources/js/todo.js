@@ -139,9 +139,8 @@
 
         function add_task(task_name, completed="", id=null, server_id = null){
             if(!id || !task_id_available(id)){
-                console.log("hello" + id);
                 id = next_task_id(id);
-                console.log("task_id default");
+                //console.log("task_id default");
             }
             var todoListItem = $('.todo-list');
             if (completed){
@@ -182,6 +181,10 @@
         function complete_add_task(task){
             // handles creation of task: server or localstorage, ui
             let ret = false;
+            if(typeof sample_tasks !== 'undefined' && sample_tasks.length>0){
+                add_task(task.task_name, false, null, null);
+                return true;
+            }
             if(is_current_user == "connected"){
                 server_create_task(task);
                 ret = true;
