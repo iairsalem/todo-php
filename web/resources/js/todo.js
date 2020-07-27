@@ -63,11 +63,6 @@
             var tasks_to_import = [];
             //var task_bin = [];
             for(var i in local_tasks){
-                /*
-                if(!local_tasks[i] || !local_tasks[i].task_name){
-                    local_tasks.splice(i, 1);
-                    i--;
-                }*/
 
                 if(!server_tasks || !has_item(server_tasks, local_tasks[i], "server_id")){
                     if (local_tasks[i] && local_tasks[i].task_name && !local_tasks[i].server_id){
@@ -87,14 +82,7 @@
                             for (var i in details){
                                 local_tasks[i].task_name = "Import Error: " + local_tasks[i].task_name;
                                 local_tasks[i].server_id = 0;
-                                /*
-                                if(!details[i]){
-                                    task_bin.push(local_tasks[i]);
-                                    local_tasks.splice(i, 1);
-                                    i--;
-                                    //continue;
-                                }
-                                */
+
                             }
                         }
                         for(var i in tasks_to_import){
@@ -106,31 +94,9 @@
                             console.log(tasks_to_import);
                         }
                         local_tasks = tasks_to_import;
-                        /*
 
-                        if(server_tasks && server_tasks.length>0){
-                            //load_tasks(server_tasks);
-                            console.log(server_tasks);
-                            //for (var i in server_tasks){
-                            //    if(local_tasks[i].server_id != local_tasks[i].server_id)
-                            //}
-                            for (var i in local_tasks){
-                                if (!has_item(server_tasks, local_tasks[i], 'server_id')){
-                                    server_tasks.push(local_tasks[i]);
-                                }
-                            }
-                            local_tasks = server_tasks;
-                            //local_tasks = local_tasks.concat(server_tasks);
-                            //$.jStorage.set("tasks", server_tasks);
-                            //local_tasks = server_tasks;
-                            console.log("local_tasks+server_tasks");
-                        }
-                        */
                         load_tasks(local_tasks);
-                        /*
-                        for(var i in local_tasks){
-                            add_task(local_tasks[i].task_name, local_tasks[i].completed, details[i], details[i]);
-                        }*/
+
                     })
                     .fail(function(jqXHR, textStatus, error) {
                     }).always(function() {
@@ -146,9 +112,6 @@
 
         function init(){
             if(typeof sample_tasks !== 'undefined' && sample_tasks.length > 0){
-                //load_tasks(sample_tasks);
-                //local_tasks = sample_tasks;
-                console.log(sample_tasks);
                 load_tasks(sample_tasks);
             } else {
                 if(is_current_user=="connected"){
@@ -157,28 +120,6 @@
                     load_tasks(local_tasks);
                     $.jStorage.set("tasks", local_tasks);
                 }
-            }
-        }
-
-        function init_old2(){
-            if(is_current_user == "connected"){
-                import_tasks("tasks"); // import from local storage to server
-                if(server_tasks && server_tasks.length>0){
-                    load_tasks(server_tasks);
-                    //$.jStorage.set("tasks", server_tasks);
-                    local_tasks = server_tasks;
-                }
-            } else {
-                local_tasks = $.jStorage.get("tasks", []);
-                for(let i in local_tasks){
-                    if (!local_tasks[i] || local_tasks[i].task_name == undefined){
-                        local_tasks.splice(i, 1);
-                        console.log("splice");
-                        continue;
-                    }
-                    add_task(local_tasks[i].task_name, local_tasks[i].completed, local_tasks[i].task_id)
-                }
-                $.jStorage.set("tasks", local_tasks);
             }
         }
 
@@ -420,8 +361,6 @@
                         }
                     });
 
-
-                /////
                 $("#task_"+id).replaceWith(get_element("original_task_"+id));
                 $("#span_task_name_"+id).text(task_name);
                 //function ends here
@@ -509,143 +448,11 @@
 
                 });
             if(fail){
-                //$("#task_name_" + id).text(task_name);
-                //$task[0].childNodes[0].checked = false;
-                //$task[0].style.backgroundColor = "Chocolate";
                 return false;
             }
             return true;
         }
 
-        function complete_task_controller(id){
-            //deprecated?
-            console.log("complete_task_controller not deprecated")
-            let error = false;
-            const $task = $("#task_" + id);
-            const task_complete = $task[0];
-            //save_element(task_complete, "complete_"+id);
-            is_changed["task_" + id] = true;
-            let response = false;
-            if(is_current_user == "connected"){
-                let server_id = $task[0].dataset.server_id;
-                response = server_complete_task(server_id);
-            } else{
-                response = {localStorage: true};
-            }
-
-            if(!response){
-                error = "empty response";
-            } else {
-                if(response["success"]){
-                    is_changed["task_" + id] = false;
-                    $("#task_name_" + id).text(task_name);
-                }else {
-                    //perhaps some logic depending on the error. defaulting to localStorage
-                    response = (response || {});
-                    response.localStorage = true;
-                    if(response.localStorage){
-                        let i = find_index_purge(tasks, "task_id", id);
-                        if (i > -1){
-                            tasks[i].completed = true;
-                            $.jStorage.set("tasks", tasks);
-                        }
-                    }else{
-                        alert("Couldn't set task as completed 2");
-                    }
-                }
-            }
-
-            if(!error){
-                return true;
-            }
-            console.log(error);
-            return false;
-        }
-
-
-        function server_pending_task(id){
-            //deprecated?
-            console.log("server_pending_task not deprecated")
-            var jqxhr = $.post( "/task/pending/" + id, {_token:csrf_token, _method:"PATCH"}, null, "json")
-                .done(function(data) {
-                    if(data["success"] == true){
-                        //
-                    } else{
-                        alert('Task: "' + task_name + '". Probably it has been deleted on the server. Consider Backing it up now.');
-                        fail=true;
-                    }
-                })
-                .fail(function(jqXHR, textStatus, error) {
-                    fail=true;
-                }).always(function() {
-                });
-            if(fail){
-                return false;
-            }
-            return true;
-        }
-
-        function pending_task_controller(id){
-            // deprecated?
-            console.log("pending_task_controller not deprecated")
-            let error = false;
-            const $task = $("#task_" + id);
-            const task_complete = $task[0];
-            //save_element(task_complete, "complete_"+id);
-            is_changed["task_" + id] = true;
-            let response = false;
-            if(is_current_user == "connected"){
-                let server_id = $task[0].dataset.server_id;
-                response = server_pending_task(server_id);
-            } else{
-                response = {localStorage: true};
-            }
-
-            if(!response){
-                error = "empty response";
-            } else {
-                if(response["success"]){
-                    is_changed["task_" + id] = false;
-                    $("#task_name_" + id).text(task_name);
-                }else {
-                    //perhaps some logic depending on the error. defaulting to localStorage
-                    response = response || {};
-                    response.localStorage=true;
-                    if(response.localStorage){
-                        let i = find_index_purge(tasks, "task_id", id);
-                        if (i > -1){
-                            tasks[i].completed = false;
-                            $.jStorage.set("tasks", tasks);
-                        }
-                    }else{
-                        alert("Couldn't set task as pending");
-                        error = true;
-                    }
-                }
-            }
-
-            if(!error){
-                return true;
-            }
-            console.log(error);
-            return false;
-        }
-
-
-        function server_edit_task(task){
-            //deprecated
-            console.log("server_edit_task not deprecated")
-            if(is_current_user == "connected"){
-                console.log("TODO: server_edit_task");
-            } else {
-                let i = find_index_purge(tasks, "task_id", task["id"]);
-                if(i > -1){
-                    tasks[i].task_name = task.task_name;
-                    tasks[i].completed = task.completed;
-                }
-                $.jStorage.set("tasks", tasks);
-            }
-        }
 
         const fn_txt_save_edit = function(){
             is_changed["task_" + task_id] = true;
@@ -671,8 +478,7 @@
 
 
         function delete_task_controller(id){
-            //console.log(id);
-            
+             
             let task_el = $("#task_" + id)[0];
             if(typeof sample_tasks !== 'undefined' && sample_tasks.length>0){
                 $(task_el).remove();
