@@ -60,7 +60,7 @@ if(!$username){
     <h1 class="text-center">Welcome, guest</h1>
      <p class="lead">This To-Do List is yours.</p>
      <p class="lead">
-         <a href="/features" class="btn btn-lg btn-secondary">Features</a>
+         <a href="/features" class="btn btn-lg btn-secondary">Explore Features</a>
      </p>
 </main>
 
