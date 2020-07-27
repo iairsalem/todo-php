@@ -64,3 +64,13 @@ function find_index_purge(arr, key, needle){
     }
     return -1;
 }
+
+function has_item(arr, item, field){
+
+    for (var i in arr){
+        if(arr[i][field] == item[field]){
+            return true;
+        }
+    }
+    return false;
+}

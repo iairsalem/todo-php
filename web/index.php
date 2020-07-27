@@ -25,7 +25,7 @@ $router->addRoutes([
     ['GET','/login', 'resources/views/login.php'],
     ['POST','/login', 'resources/views/login.php'],
     ['GET','/logout', 'logout'],
-    ['POST','/login', 'authenticate_login'],
+//    ['POST','/login', 'authenticate_login'],
     ]);
 
 // JSON Response Routes
@@ -67,10 +67,6 @@ if( is_array($match) && is_callable( $match['target'] ) ) {
 */
 
 function serve_file($type, $file){
-    //deprecated
-    //return false;
-    //error_reporting(E_ALL ^ E_NOTICE);
-    
     
     $last_modified_time = filemtime("resources/$type/" . $file);
     $etag = md5_file("resources/$type/".$file);
@@ -97,6 +93,5 @@ function serve_file($type, $file){
     header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 60 * 24 * 30)));
     header("Content-type: {$mime_types[$ext]}"); //image/svg+xml
     readfile("resources/$type/$file");
-    //echo file_get_contents('static/'.$file);
 }
 

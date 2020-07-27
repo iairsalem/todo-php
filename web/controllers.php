@@ -117,7 +117,7 @@ function delete_task($id, $echo = true){
     if($echo){
         echo json_encode($ret);
     } else {
-        flash('Task created.');
+        flash('Task deleted');
         header("Location: /");
         return $ret;
     }
@@ -139,7 +139,8 @@ function import_tasks($echo = true){
     if(isset($_POST["import"])){
         $q = $conn->prepare($sql);
         foreach($_POST["import"] as $index => $task){
-            $status = (isset($task['completed']) && $task['completed']) ? 'completed': 'pending';
+            //error_log(json_encode($_POST['import']));
+            $status = (isset($task['completed']) && $task['completed']!= 'false') ? 'completed': 'pending';
             $task_name = $task["task_name"];
             if($task_name == ''){
                 continue;
@@ -214,7 +215,7 @@ function complete_pending_task($id, $complete_pending = 'complete'){
     } else{
         $ret['success'] = false;
     }
-    header('Content-Type: application/json');
+    //header('Content-Type: application/json');
     exit(json_encode($ret));
 }
 
@@ -253,7 +254,7 @@ function list_tasks($echo = true){
     $user_id = $auth->user_id();
 
 
-    $sql = 'SELECT * FROM tasks WHERE user_id = :user_id ORDER BY created_updated, completed DESC';
+    $sql = 'SELECT task_id, task_id as server_id, user_id, name as task_name, status FROM tasks WHERE user_id = :user_id ORDER BY created_updated, completed DESC';
     $query = $conn->prepare($sql);
     $query->bindValue(':user_id', $user_id);
     $query->execute();
@@ -264,6 +265,7 @@ function list_tasks($echo = true){
         } else{
             $row['completed'] = false;
         }
+        unset($row['status']);
         $tasks[] = $row;
     }
     if($echo){

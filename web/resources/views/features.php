@@ -36,17 +36,17 @@ if($auth->is_logged_in()){
             "Own implementation of CSRF protection",
             "RESTful, php returns json. Does not allow to change other user's tasks",
             "Dynamic UI. Inline editing",
-            "Features (this)  To-Do list is clirnt-side only"
+            "Features (this)  To-Do list is client-side only"
         ];
 
         var server_tasks = <?php list_tasks(true);?>;
         sample_tasks.reverse();
 
         for(var i in sample_tasks){
-            server_tasks.push({name: sample_tasks[i], task_id:i})
+            sample_tasks[i] = {task_name: sample_tasks[i], name: sample_tasks[i], completed:false, task_id:Number(i)+1, server_id:0};
+            //server_tasks.push({name: sample_tasks[i], task_id:i})
         }
         //server_tasks = sample_tasks.concat(server_tasks);
-
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
