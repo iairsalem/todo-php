@@ -298,14 +298,15 @@
         }
 
         function set_task_status_local(_c){
-
             let i = find_index_purge(local_tasks, "task_id", _c.task_id);
+            
             if (i > -1){
                 local_tasks[i].completed = _c.checked;
                 $.jStorage.set("tasks", local_tasks);
-                _c.parent.toggleClass('completed');
-                _c.$this.parent().parent().nextAll(".edit_button").css("visibility", _c.$this[0].checked? 'hidden':'visible');
             }
+
+            _c.parent.toggleClass('completed');
+            _c.$this.parent().parent().nextAll(".edit_button").css("visibility", _c.$this[0].checked? 'hidden':'visible');
             is_changed["task_" + _c.task_id] = false;
             _c.$this[0].disabled = false;
         }
